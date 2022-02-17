@@ -1,0 +1,12 @@
+{
+  "name": "jwe-decrypt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "jwe-decrypt.js",
+  "scripts": {
+    "start": "node jwe-decrypt.js"
+  },
+  "dependencies": {
+    "jose": "^4.5.0"
+  }
+}

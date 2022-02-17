@@ -17,23 +17,23 @@ namespace JweDecrypt
         {
             var jwe = "<Paste JWE token here>";
       
-            // Load your private key, which will be used to decrypt the JWE token
-            var privateKey = LoadPrivateKey();
+            // Retrieve your private key, which will be used to decrypt the JWE token
+            var decryptionKey = GetDecryptionKey();
 
             // Decrypt the token, which again contains a signed token (JWS)
-            var decryptedToken = Jose.JWE.Decrypt(jwe, privateKey);
+            var decryptedToken = Jose.JWE.Decrypt(jwe, decryptionKey);
             var jws = decryptedToken.Plaintext;
             
-            // Download the public key used to verify the JWS
-            var signingKey = await DownloadSigningKey(jws);
+            // Retrieve the key used to validate the JWS signature
+            var validationKey = await GetValidationKey(jws);
 
-            // Decode and verify the JWS, which returns the actual JSON payload
-            var payload = Jose.JWT.Decode(jws, signingKey);
+            // Decode and validate the JWS, which returns the actual JSON payload
+            var payload = Jose.JWT.Decode(jws, validationKey);
 
             Console.WriteLine(payload);
         }
         
-        private static RSA LoadPrivateKey()
+        private static RSA GetDecryptionKey()
         {
             // Read JWK private key from file and convert to RSA object 
             var json = File.ReadAllText("/path/to/key.json");
@@ -54,7 +54,7 @@ namespace JweDecrypt
             return RSA.Create(rsaParams);
         }
 
-        private static async Task<RSA> DownloadSigningKey(string jws)
+        private static async Task<RSA> GetValidationKey(string jws)
         {
             var httpClient = new HttpClient();
             
