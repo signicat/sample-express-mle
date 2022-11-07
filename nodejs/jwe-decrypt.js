@@ -28,7 +28,10 @@ async function getDecryptionKey() {
 }
 
 function getValidationKeys() {
-    // This sample uses the JWKS endpoint for the REST API flow.
+    // This sample uses the JWKS endpoint for the Authentication REST API.
+    // The API gateway targets the production environment by default.
+    // Requests that contain a valid access token will automatically be routed to the correct environment.
+    // Alternatively you can add the following header to target the test environment: `X-Signicat-Environment: Test`
     // If you are using OpenID Connect, use the following endpoint: https://login.signicat.io/.well-known/openid-configuration/jwks
     const jwksEndpoint = 'https://api.signicat.io/identification/v2/jwks';
     
